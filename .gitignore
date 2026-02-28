@@ -22,3 +22,5 @@ crash.log
 # Terraform CLI configuration
 .terraformrc
 terraform.rc
+.terraform.lock.hcl
+scripts/

@@ -1,0 +1,25 @@
+# GCP
+gcp_project_id        = "your-gcp-project-id"
+gcp_region            = "us-south1"
+gcp_zone              = "us-south1-a"
+ssh_user              = "ubuntu"
+ssh_public_key_path   = "~/.ssh/id_ed25519.pub"
+core_machine_type     = "t2d-standard-4"
+ueransim_machine_type = "t2d-standard-2"
+core_disk_size_gb     = 50
+ueransim_disk_size_gb = 30
+ubuntu_image          = "ubuntu-os-cloud/ubuntu-2204-lts"
+
+# OCI
+oci_tenancy_ocid        = "ocid1.tenancy.oc1..xxxxx"
+oci_user_ocid           = "ocid1.user.oc1..xxxxx"
+oci_fingerprint         = "xx:xx:xx:xx:xx:xx:xx:xx"
+oci_private_key_path    = "C:/Users/<username>/.oci/terraform_api_key.pem" # local file path to API key for terraform authentication 
+oci_region              = "us-ashburn-1"
+oci_compartment_ocid    = "ocid1.tenancy.oc1..xxxxx"
+oci_ubuntu_image_ocid   = "ocid1.image.oc1.iad.xxxxx"
+oci_availability_domain = "DRxg:US-ASHBURN-AD-2"  # Free tier E2.1.Micro only available in AD-2.
+oci_ssh_public_key      = "ssh-ed25519 AAAAC3..."  # For laptop-to-BastionVM access. ssh -i with the paired private key on your laptop
+
+# WireGuard
+wireguard_port = 51820  # Standard WireGuard port
