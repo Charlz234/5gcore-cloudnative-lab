@@ -1,0 +1,24 @@
+*.pem                
+oci_api_key* 
+terraform.log
+
+# Local terraform directory
+.terraform/
+
+# State files (contains sensitive infra data and IPs)
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Terraform variables
+*.tfvars
+*.tfvars.json
+
+# GCP Service Account Keys 
+*.json
+
+# Terraform CLI configuration
+.terraformrc
+terraform.rc
