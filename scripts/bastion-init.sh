@@ -42,6 +42,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/google-cloud-sdk
 mkdir -p /etc/wireguard
 wg genkey | tee /etc/wireguard/server_private.key | \
   wg pubkey > /etc/wireguard/server_public.key
+chmod 755 /etc/wireguard
 chmod 600 /etc/wireguard/server_private.key
 chmod 644 /etc/wireguard/server_public.key
 
@@ -53,6 +54,7 @@ cat > /etc/wireguard/wg0.conf << WGEOF
 [Interface]
 PrivateKey = $SERVER_PRIVATE_KEY
 Address = 10.10.0.1/24
+# Port injected by Terraform templatefile()
 ListenPort = ${wireguard_port}
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
