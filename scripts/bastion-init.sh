@@ -30,14 +30,6 @@ echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 echo 'net.ipv6.conf.all.forwarding=1' >> /etc/sysctl.conf
 sysctl -p
 
-# ---- Install gcloud CLI ----
-# Used by lab control scripts to start/stop GCP VMs
-curl -sSL https://sdk.cloud.google.com | bash -s -- \
-  --disable-prompts \
-  --install-dir=/home/ubuntu
-echo 'export PATH=$PATH:/home/ubuntu/google-cloud-sdk/bin' >> /home/ubuntu/.bashrc
-chown -R ubuntu:ubuntu /home/ubuntu/google-cloud-sdk
-
 # ---- WireGuard Key Generation ----
 mkdir -p /etc/wireguard
 wg genkey | tee /etc/wireguard/server_private.key | \

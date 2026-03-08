@@ -81,3 +81,15 @@ resource "google_compute_firewall" "allow_icmp" {
   source_ranges = ["10.0.0.0/8"]
   description   = "Allow ping within lab network"
 }
+
+resource "google_compute_firewall" "allow_iap_ssh" {
+  name    = "allow-iap-ssh"
+  network = google_compute_network.telecom_lab_vpc.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["35.235.240.0/20"]
+}
