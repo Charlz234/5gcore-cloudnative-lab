@@ -287,12 +287,14 @@ curl --interface uesimtun0 ifconfig.me
 |----------|------|
 | GCP core-5g (T2d-Standard-4) | less than $4/month |
 | GCP ueransim (T2d-Standard-2) | less than $2/month |
-| GCP Cloud NAT | less than $1.5/month |
+| GCP Cloud NAT | less than $1/month |
+| Core-5g 50GB pd-standard disk (50GB × $0.040/GB)  | $2/month |
+| UERANSIM 30GB pd-standard disk (30GB × $0.040/GB) | $1.20/month |
 | OCI bastion | Free (Always Free tier) |
 | GCP egress | Free (within free tier) |
-| **Total** | **less than $8/month** |
+| **Total** | **less than $11/month** |
 
-VMs are scheduled to run for 6 hours daily to minimise cost.
+GCP VMs are scheduled to run for 6 hours daily to minimise cost.
 
 ---
 

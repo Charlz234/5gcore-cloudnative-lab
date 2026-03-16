@@ -56,13 +56,13 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
 # Run scripts/wireguard-setup.sh to configure
 # ============================================
 
-# GCP core-5g VM — uncomment and add key after deployment
+# GCP core-5g VM - uncomment and add key after deployment
 # [Peer]
 # PublicKey = <core-5g-wg-public-key>
 # AllowedIPs = 10.10.0.3/32
 # PersistentKeepalive = 25
 
-# GCP ueransim VM — uncomment and add key after deployment
+# GCP ueransim VM - uncomment and add key after deployment
 # [Peer]
 # PublicKey = <ueransim-wg-public-key>
 # AllowedIPs = 10.10.0.4/32

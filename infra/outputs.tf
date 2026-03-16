@@ -47,11 +47,11 @@ output "wireguard_setup_instructions" {
      cat /etc/wireguard/server_public.key
 
   3. SSH into core_5g via bastion and get its WireGuard public key:
-     ssh -J ubuntu@${oci_core_instance.bastion.public_ip} ubuntu@${google_compute_instance.core_5g.network_interface[0].network_ip}
+     gcloud compute ssh core-5g --tunnel-through-iap --zone=us-south1-a or use SSH in GCP Console
      cat /etc/wireguard/public.key
 
   4. SSH into ueransim via bastion and get its WireGuard public key:
-     ssh -J ubuntu@${oci_core_instance.bastion.public_ip} ubuntu@${google_compute_instance.ueransim.network_interface[0].network_ip}
+     gcloud compute ssh ueransim --tunnel-through-iap --zone=us-south1-a or use SSH in GCP Console
      cat /etc/wireguard/public.key
 
   5. Add peers to OCI bastion /etc/wireguard/wg0.conf
@@ -77,13 +77,14 @@ output "estimated_monthly_cost" {
 
  === Estimated Monthly Cost ===
   OCI Bastion (free)               $0.00
-  core-5g t2d-standard-4 spot      $3.60
-  ueransim t2d-standard-2 spot     $1.80
+  core-5g t2d-standard-4 spot     ~$4.00
+  ueransim t2d-standard-2 spot    ~$2.00
   core-5g disk 50GB pd-standard    $2.00
   ueransim disk 30GB pd-standard   $1.20
+  GCP Cloud NAT                   ~$1.00
   Cloud Scheduler                  $0.00
   --------------------------------
-  Total                            ~$8.60/month
+  Total               less than $11/month
 
   Set a GCP billing alert at $15/month as safety net.
 
