@@ -90,6 +90,9 @@ sudo systemctl enable wg-quick@wg0
 sudo wg-quick up wg0
 sudo wg show
 
+#Connect to OCI Bastion VM: ssh -i <path-to-ociVM-private-key> ubuntu@<oci-public-ip>
+#To connect to core-5g VM: ssh -J ubuntu@<ociVM-public-ip> ubuntu@10.10.0.3
+#To connect to ueransim VM: ssh -J ubuntu@<ociVM-public-ip> ubuntu@10.10.0.4
 
 
 ===CHECKS===

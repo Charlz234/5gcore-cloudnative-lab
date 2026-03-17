@@ -20,6 +20,6 @@ alias lab-extend="gcloud scheduler jobs pause stop-core-5g && gcloud scheduler j
 alias lab-resume="gcloud scheduler jobs resume stop-core-5g && gcloud scheduler jobs resume stop-ueransim --location=us-central1 --project=YOUR_PROJECT_ID"
 
 # SSH Shortcuts
-alias bastion="ssh -i ~/.ssh/id_ed25519 ubuntu@BASTION_IP"
-alias ssh-core="ssh -J ubuntu@BASTION_IP ubuntu@CORE_IP"
-alias ssh-ueransim="ssh -J ubuntu@BASTION_IP ubuntu@UERANSIM_IP"
+alias bastion="ssh -i ~/.ssh/id_ed25519 ubuntu@BASTION_IP"  # ~/.ssh/id_ed25519 is assumed to be the path of OCI-VM private key
+alias ssh-core="ssh -J ubuntu@BASTION_IP ubuntu@10.10.0.3"
+alias ssh-ueransim="ssh -J ubuntu@BASTION_IP ubuntu@10.10.0.4"

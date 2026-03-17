@@ -46,7 +46,7 @@ output "wireguard_setup_instructions" {
   2. Get bastion WireGuard public key:
      cat /etc/wireguard/server_public.key
 
-  3. SSH into core_5g via bastion and get its WireGuard public key:
+  3. SSH into core_5g via bastion and get its WireGuard public key: ~with GCP Cloud SDK already set up~
      gcloud compute ssh core-5g --tunnel-through-iap --zone=us-south1-a or use SSH in GCP Console
      cat /etc/wireguard/public.key
 
