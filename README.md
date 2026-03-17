@@ -85,7 +85,7 @@
 | VPN | WireGuard mesh |
 | IaC | Terraform |
 | OS | Ubuntu 22.04 LTS |
-| Cost | ~$10/month |
+| Cost | ~$11/month |
 
 ---
 
