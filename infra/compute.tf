@@ -36,7 +36,8 @@ resource "google_compute_instance" "core_5g" {
 
   network_interface {
     subnetwork = google_compute_subnetwork.private_subnet.id
-    # No public IP — access via OCI WireGuard bastion only
+    network_ip = var.core_5g_ip
+    # No public IP — access via OCI WireGuard bastion and IAP(ssh on console)
   }
 
   metadata = {
@@ -197,7 +198,8 @@ resource "google_compute_instance" "ueransim" {
 
   network_interface {
     subnetwork = google_compute_subnetwork.private_subnet.id
-    # No public IP — access via OCI WireGuard bastion only
+    network_ip = var.ueransim_ip
+    # No public IP — access via OCI WireGuard bastion and and IAP(ssh on console)
   }
 
   metadata = {

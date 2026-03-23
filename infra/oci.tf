@@ -89,6 +89,11 @@ resource "oci_core_instance" "bastion" {
   display_name        = "telecom-bastion"
   shape               = "VM.Standard.E2.1.Micro"
 
+  lifecycle {
+    ignore_changes = [metadata] # Prevents recreation when OCI VM after metadata changes
+  }
+
+
   source_details {
     source_type = "image"
     source_id   = var.oci_ubuntu_image_ocid

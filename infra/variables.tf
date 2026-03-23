@@ -62,6 +62,18 @@ variable "ubuntu_image" {
 
 }
 
+variable "core_5g_ip" {
+  description = "Fixed internal IP for core-5g VM"
+  type        = string
+  default     = "10.0.2.3"
+}
+
+variable "ueransim_ip" {
+  description = "Fixed internal IP for ueransim VM"
+  type        = string
+  default     = "10.0.2.2"
+}
+
 # ============================================
 # OCI Variables
 # ============================================
