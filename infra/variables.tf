@@ -74,6 +74,13 @@ variable "ueransim_ip" {
   default     = "10.0.2.2"
 }
 
+variable "core_startup_script" {
+  description = "Startup script for core-5g VM. Change in terraform.tfvars to switch weeks"
+  type        = string
+  default     = "startup/startup-week1.sh"
+  
+}
+
 # ============================================
 # OCI Variables
 # ============================================

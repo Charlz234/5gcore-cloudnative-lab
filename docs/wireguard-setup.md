@@ -47,6 +47,10 @@ sudo wg-quick up wg0
 
 sudo wg show
 
+# If sudo wg show is not populating packets, especially  after adding a new peer, you can restart wg
+sudo wq-quick down wg0 
+sudo wq-quick up wg0 
+
 
 
 
