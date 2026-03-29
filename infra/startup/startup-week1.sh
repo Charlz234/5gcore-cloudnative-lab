@@ -25,7 +25,7 @@
         iptables \
         linux-headers-$(uname -r) \
         build-essential \
-        gcc-12
+        gcc-12 \
         jq
 
       # ---- Docker (official repo — includes compose plugin) ----

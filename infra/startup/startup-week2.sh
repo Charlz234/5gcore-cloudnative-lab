@@ -25,7 +25,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y \
   iptables \
   linux-headers-$(uname -r) \
   build-essential \
-  gcc \
+  gcc-12 \
   jq \
   python3
 
@@ -82,6 +82,9 @@ cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 chmod 600 /home/ubuntu/.kube/config
 
+echo 'export KUBECONFIG=~/.kube/config' >> /home/ubuntu/.bashrc
+export KUBECONFIG=/home/ubuntu/.kube/config
+
 # Auto-refresh kubeconfig on every login (k3s rewrites it as root on restart)
 cat >> /home/ubuntu/.bashrc << 'BASHEOF'
 
@@ -133,6 +136,31 @@ kubectl patch cm cilium-config -n kube-system \
   --type merge \
   -p '{"data":{"custom-cni-conf":"true","cni-exclusive":"false"}}'
 
+cat > /etc/cni/net.d/05-cilium.conflist << 'CNIEOF'
+{
+  "cniVersion": "0.3.1",
+  "name": "cilium",
+  "plugins": [
+    {
+       "type": "cilium-cni",
+       "enable-debug": false,
+       "log-file": "/var/run/cilium/cilium-cni.log"
+    }
+  ]
+}
+CNIEOF
+
+cat > /etc/cni/net.d/00-multus.conf << 'CNIEOF'
+{
+  "cniVersion": "0.3.1",
+  "name": "multus-cni-network",
+  "type": "multus-shim",
+  "logLevel": "verbose",
+  "logToStderr": true,
+  "clusterNetwork": "/host/etc/cni/net.d/05-cilium.conflist"
+}
+CNIEOF
+
 kubectl delete pod -n kube-system -l app.kubernetes.io/name=cilium-agent
 kubectl rollout status ds/cilium -n kube-system --timeout=120s
 
@@ -166,7 +194,7 @@ cat > /etc/cni/net.d/00-multus.conf << 'CNIEOF'
 }
 CNIEOF
 
-echo "CNI net.d: $(ls /etc/cni/net.d/)" >> /var/log/startup-script.log
+echo "CNI configs written: $(ls /etc/cni/net.d/)" >> /var/log/startup-script.log
 
 # ---- Dummy Network Interfaces ----
 # GCP hypervisor disables promiscuous mode — ipvlan/macvlan not available
