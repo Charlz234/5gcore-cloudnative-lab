@@ -28,7 +28,7 @@ UERANSIM VM (10.0.2.2)          core-5g VM (10.0.2.3)
 **Why AMF and UPF run on hostNetwork:**
 - AMF needs NGAP/SCTP on N2 — SCTP doesn't work reliably through Kubernetes service proxying
 - UPF needs GTP-U on N3 and direct kernel access for the gtp5g module
-- Both appear as the `host` node in Hubble — this is expected, not a bug
+- Both do not appear alongside other NFs in Hubble — this is expected, not a bug
 
 **Why dummy interfaces instead of macvlan/ipvlan:**
 GCP's hypervisor disables promiscuous mode. macvlan and ipvlan are blocked at the hypervisor level. Dummy interfaces with the host-device CNI plugin are the correct workaround for Multus NADs on GCP.
