@@ -1,0 +1,132 @@
+<svg width="100%" viewBox="0 0 680 740" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: sans-serif; fill: #1a1a1a; }
+      .th { font-size: 14px; font-weight: 500; }
+      .ts { font-size: 12px; font-weight: 400; fill: #555; }
+      .arr { stroke: #555; stroke-width: 1.5; fill: none; }
+      .c-amber rect { fill: #FAEEDA; stroke: #854F0B; }
+      .c-amber text { fill: #633806; }
+      .c-teal rect { fill: #E1F5EE; stroke: #0F6E56; }
+      .c-teal text { fill: #085041; }
+      .c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+      .c-purple text { fill: #3C3489; }
+      .c-gray rect { fill: #F1EFE8; stroke: #5F5E5A; }
+      .c-gray text { fill: #444441; }
+    </style>
+  </defs>
+
+  <!-- Browser -->
+  <g class="c-gray">
+    <rect x="260" y="20" width="160" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">Browser</text>
+  </g>
+
+  <line x1="340" y1="64" x2="340" y2="104" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="352" y="88" dominant-baseline="central">HTTPS</text>
+
+  <!-- Cloudflare edge -->
+  <g class="c-amber">
+    <rect x="210" y="104" width="260" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="126" text-anchor="middle" dominant-baseline="central">Cloudflare edge</text>
+    <text class="ts" x="340" y="146" text-anchor="middle" dominant-baseline="central">TLS termination · proxy</text>
+  </g>
+
+  <line x1="340" y1="160" x2="340" y2="204" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="352" y="184" dominant-baseline="central">QUIC tunnel</text>
+
+  <!-- GCP VM outer container -->
+  <rect x="30" y="204" width="620" height="500" rx="16" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="6 4"/>
+  <text class="ts" x="46" y="224" dominant-baseline="central">GCP core-5g · t2d-standard-4 spot · us-south1-a</text>
+
+  <!-- cloudflared -->
+  <g class="c-amber">
+    <rect x="210" y="232" width="260" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="254" text-anchor="middle" dominant-baseline="central">cloudflared</text>
+    <text class="ts" x="340" y="274" text-anchor="middle" dominant-baseline="central">systemd service · tunnel out</text>
+  </g>
+
+  <line x1="340" y1="288" x2="340" y2="336" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="352" y="314" dominant-baseline="central">ClusterIP :80</text>
+
+  <!-- k3s container -->
+  <rect x="44" y="320" width="592" height="368" rx="12" fill="none" stroke="#ccc" stroke-width="0.5" stroke-dasharray="4 3"/>
+  <text class="ts" x="60" y="338" dominant-baseline="central">k3s · Cilium v1.19.1 · Multus</text>
+
+  <!-- monitoring namespace -->
+  <rect x="58" y="348" width="340" height="316" rx="10" fill="none" stroke="#bbb" stroke-width="0.5" stroke-dasharray="3 3"/>
+  <text class="ts" x="72" y="366" dominant-baseline="central">monitoring namespace</text>
+
+  <!-- Grafana -->
+  <g class="c-teal">
+    <rect x="72" y="374" width="150" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="147" y="396" text-anchor="middle" dominant-baseline="central">Grafana</text>
+    <text class="ts" x="147" y="416" text-anchor="middle" dominant-baseline="central">ClusterIP </text>
+  </g>
+
+  <!-- Prometheus -->
+  <g class="c-teal">
+    <rect x="238" y="374" width="146" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="311" y="396" text-anchor="middle" dominant-baseline="central">Prometheus</text>
+    <text class="ts" x="311" y="416" text-anchor="middle" dominant-baseline="central">TSDB · 10Gi PVC</text>
+  </g>
+
+  <line x1="238" y1="402" x2="222" y2="402" class="arr" marker-end="url(#arrow)"/>
+
+  <!-- kube-state-metrics -->
+  <g class="c-teal">
+    <rect x="72" y="464" width="150" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="147" y="484" text-anchor="middle" dominant-baseline="central">kube-state-metrics</text>
+    <text class="ts" x="147" y="504" text-anchor="middle" dominant-baseline="central">cluster metrics</text>
+  </g>
+
+  <!-- node-exporter -->
+  <g class="c-teal">
+    <rect x="238" y="464" width="146" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="311" y="484" text-anchor="middle" dominant-baseline="central">node-exporter</text>
+    <text class="ts" x="311" y="504" text-anchor="middle" dominant-baseline="central">host metrics</text>
+  </g>
+
+  <line x1="147" y1="464" x2="280" y2="432" class="arr" marker-end="url(#arrow)"/>
+  <line x1="311" y1="464" x2="311" y2="432" class="arr" marker-end="url(#arrow)"/>
+
+  <!-- ServiceMonitors -->
+  <g class="c-gray">
+    <rect x="72" y="556" width="312" height="44" rx="8" stroke-width="0.5"/>
+    <text class="ts" x="228" y="578" text-anchor="middle" dominant-baseline="central">ServiceMonitors scrape NFs on port 9089</text>
+  </g>
+
+  <line x1="311" y1="556" x2="311" y2="522" class="arr" marker-end="url(#arrow)"/>
+
+  <!-- free5gc namespace -->
+  <rect x="412" y="348" width="212" height="316" rx="10" fill="none" stroke="#bbb" stroke-width="0.5" stroke-dasharray="3 3"/>
+  <text class="ts" x="426" y="366" dominant-baseline="central">free5gc namespace</text>
+
+  <!-- AMF · SMF · UPF -->
+  <g class="c-purple">
+    <rect x="426" y="374" width="184" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="518" y="394" text-anchor="middle" dominant-baseline="central">AMF · SMF · UPF</text>
+    <text class="ts" x="518" y="414" text-anchor="middle" dominant-baseline="central">hostNetwork · NGAP/GTP-U</text>
+  </g>
+
+  <!-- NRF · UDM · UDR -->
+  <g class="c-purple">
+    <rect x="426" y="452" width="184" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="518" y="472" text-anchor="middle" dominant-baseline="central">NRF · UDM · UDR</text>
+    <text class="ts" x="518" y="492" text-anchor="middle" dominant-baseline="central">SBI · port 9089</text>
+  </g>
+
+  <!-- AUSF · PCF · NSSF -->
+  <g class="c-purple">
+    <rect x="426" y="530" width="184" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="518" y="550" text-anchor="middle" dominant-baseline="central">AUSF · PCF · NSSF</text>
+    <text class="ts" x="518" y="570" text-anchor="middle" dominant-baseline="central">ServiceMonitors</text>
+  </g>
+
+  <line x1="384" y1="578" x2="424" y2="558" class="arr" marker-end="url(#arrow)"/>
+  <line x1="384" y1="578" x2="424" y2="480" class="arr" marker-end="url(#arrow)"/>
+  <line x1="384" y1="578" x2="424" y2="402" class="arr" marker-end="url(#arrow)"/>
+</svg>
