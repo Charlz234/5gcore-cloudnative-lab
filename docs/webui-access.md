@@ -2,7 +2,6 @@ Subscriber provisioning can be done on WebUI.
 
 Keep this running in your laptop:  ssh -i path-to-oci-vm-private-key -L 5000:10.10.0.3:5000 ubuntu@<oci-vm-public-ip>  
 
-
 Open http://localhost:5000 in your browser
 
 Username/password: admin/free5gc
