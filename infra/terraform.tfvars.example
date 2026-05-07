@@ -1,29 +1,19 @@
-# GCP
-gcp_project_id        = "your-gcp-project-id"
-gcp_region            = "us-south1"
-gcp_zone              = "us-south1-a"
-ssh_user              = "ubuntu"
-ssh_public_key_path   = "~/.ssh/id_ed25519.pub"
-core_machine_type     = "t2d-standard-4"
-ueransim_machine_type = "t2d-standard-2"
-core_disk_size_gb     = 50
-ueransim_disk_size_gb = 30
-ubuntu_image          = "ubuntu-os-cloud/ubuntu-2204-lts"
-core_startup_script   = "startup/startup-week1.sh" 
-# Switch weeks by uncommenting the desired script:
-# core_startup_script = "startup/startup-week1.sh"   # Docker Compose
-# core_startup_script = "startup/startup-week2.sh"   # Kubernetes
+# ============================================
+# terraform.tfvars.example
+# Copy to terraform.tfvars and fill in your values.
+# terraform.tfvars is gitignored - do not ever commit it.
+# ============================================
 
-# OCI
-oci_tenancy_ocid        = "ocid1.tenancy.oc1..xxxxx"
-oci_user_ocid           = "ocid1.user.oc1..xxxxx"
-oci_fingerprint         = "xx:xx:xx:xx:xx:xx:xx:xx"
-oci_private_key_path    = "C:/Users/<username>/.oci/terraform_api_key.pem" # local file path to API key for terraform authentication 
-oci_region              = "us-ashburn-1"
-oci_compartment_ocid    = "ocid1.tenancy.oc1..xxxxx"
-oci_ubuntu_image_ocid   = "ocid1.image.oc1.iad.xxxxx"
-oci_availability_domain = "DRxg:US-ASHBURN-AD-2"  # Free tier E2.1.Micro only available in AD-2.
-oci_ssh_public_key      = "ssh-ed25519 ABCD123..."  # For laptop-to-BastionVM access.
+gcp_project_id      = "your-gcp-project-id"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
 
-# WireGuard
-wireguard_port = 51820  # Standard WireGuard port
+# Optional overrides (defaults match current lab config)
+# gcp_region             = "us-south1"
+# gcp_zone               = "us-south1-a"
+# core_machine_type      = "t2d-standard-2"
+# ueransim_machine_type  = "t2d-standard-1"
+# core_disk_size_gb      = 30
+# ueransim_disk_size_gb  = 10
+# core_5g_ip             = "10.0.2.3"
+# ueransim_ip            = "10.0.2.2"
+# grafana_admin_password = "your-strong-password-here"

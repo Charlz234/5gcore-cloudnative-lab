@@ -24,16 +24,14 @@ resource "google_compute_router" "lab_router" {
   network = google_compute_network.telecom_lab_vpc.id
 }
 
-# Cloud NAT — allows private VMs outbound internet
+# Cloud NAT — outbound internet for private VMs (image pulls, apt, git clone)
 resource "google_compute_router_nat" "lab_nat" {
-  name   = "lab-nat"
-  router = google_compute_router.lab_router.name
-  region = var.gcp_region
-
-  nat_ip_allocate_option = "AUTO_ONLY"
+  name                               = "lab-nat"
+  router                             = google_compute_router.lab_router.name
+  region                             = var.gcp_region
+  nat_ip_allocate_option             = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
-  # Fix port allocation per VM
   min_ports_per_vm                    = 64
   max_ports_per_vm                    = 64
   enable_dynamic_port_allocation      = false
@@ -41,7 +39,7 @@ resource "google_compute_router_nat" "lab_nat" {
 }
 
 # Allow all internal VPC traffic
-# because 5g-core and ueransim communicate over N1/N2/N3
+# 5g-core and ueransim communicate over N1/N2/N3 interfaces
 resource "google_compute_firewall" "allow_internal" {
   name    = "allow-internal"
   network = google_compute_network.telecom_lab_vpc.id
@@ -51,37 +49,10 @@ resource "google_compute_firewall" "allow_internal" {
   }
 
   source_ranges = ["10.0.0.0/8"]
-  description   = "Allow all internal traffic including WireGuard subnet"
+  description   = "Allow all internal traffic between lab VMs"
 }
 
-# Allow WireGuard UDP from OCI bastion
-resource "google_compute_firewall" "allow_wireguard" {
-  name    = "allow-wireguard"
-  network = google_compute_network.telecom_lab_vpc.id
-
-  allow {
-    protocol = "udp"
-    ports    = [tostring(var.wireguard_port)]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["lab-vm"]
-  description   = "Allow WireGuard tunnel from OCI bastion"
-}
-
-# Allow ICMP for troubleshooting inside GCP VMs: between 5G Core and UERANSIM
-resource "google_compute_firewall" "allow_icmp" {
-  name    = "allow-icmp"
-  network = google_compute_network.telecom_lab_vpc.id
-
-  allow {
-    protocol = "icmp"
-  }
-
-  source_ranges = ["10.0.0.0/8"]
-  description   = "Allow ping within lab network"
-}
-
+# Allow IAP SSH — no public IPs needed
 resource "google_compute_firewall" "allow_iap_ssh" {
   name    = "allow-iap-ssh"
   network = google_compute_network.telecom_lab_vpc.name
@@ -92,4 +63,18 @@ resource "google_compute_firewall" "allow_iap_ssh" {
   }
 
   source_ranges = ["35.235.240.0/20"]
+  description   = "Allow SSH via Google IAP tunnel"
+}
+
+# Allow ICMP for troubleshooting
+resource "google_compute_firewall" "allow_icmp" {
+  name    = "allow-icmp"
+  network = google_compute_network.telecom_lab_vpc.id
+
+  allow {
+    protocol = "icmp"
+  }
+
+  source_ranges = ["10.0.0.0/8"]
+  description   = "Allow ping within lab network"
 }

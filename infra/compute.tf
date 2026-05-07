@@ -8,9 +8,10 @@ locals {
 
 # ============================================
 # 5G Core VM
-# t2d-standard-4 spot | 4 vCPU | 16GB | 50GB
-# Runs: Free5GC, WireGuard peer, Prometheus,
-#       Grafana, k3s, Cilium, ArgoCD
+# t2d-standard-2 spot | 2 vCPU | 8GB | 30GB
+# Runs: Free5GC, k3s, Cilium, Multus, ArgoCD,
+#       Prometheus, Grafana, gtp5g-exporter
+# Access: gcloud compute ssh core-5g --zone=us-south1-a --tunnel-through-iap
 # ============================================
 resource "google_compute_instance" "core_5g" {
   name           = "core-5g"
@@ -37,12 +38,14 @@ resource "google_compute_instance" "core_5g" {
   network_interface {
     subnetwork = google_compute_subnetwork.private_subnet.id
     network_ip = var.core_5g_ip
-    # No public IP — access via OCI WireGuard bastion and IAP(ssh on console)
+    # No public IP — SSH via IAP: gcloud compute ssh core-5g --tunnel-through-iap --zone=us-south1-a
   }
 
   metadata = {
-    ssh-keys = "${var.ssh_user}:${local.ssh_public_key}"
+    ssh-keys       = "${var.ssh_user}:${local.ssh_public_key}"
     startup-script = file("${path.module}/${var.core_startup_script}")
+    grafana-admin-password = var.grafana_admin_password
+    enable-oslogin = "FALSE"
   }
 
   labels = {
@@ -57,8 +60,9 @@ resource "google_compute_instance" "core_5g" {
 
 # ============================================
 # UERANSIM VM
-# t2d-standard-2 spot | 2 vCPU | 8GB | 30GB
-# Runs: UERANSIM gNB + UE, WireGuard peer
+# t2d-standard-1 spot | 1 vCPU | 4GB | 10GB
+# Runs: UERANSIM gNB + UE
+# Access: gcloud compute ssh ueransim --zone=us-south1-a --tunnel-through-iap
 # ============================================
 resource "google_compute_instance" "ueransim" {
   name           = "ueransim"
@@ -85,109 +89,14 @@ resource "google_compute_instance" "ueransim" {
   network_interface {
     subnetwork = google_compute_subnetwork.private_subnet.id
     network_ip = var.ueransim_ip
-    # No public IP — access via OCI WireGuard bastion and and IAP(ssh on console)
+    # No public IP — SSH via IAP: gcloud compute ssh ueransim --tunnel-through-iap --zone=us-south1-a
   }
 
   metadata = {
-    ssh-keys = "${var.ssh_user}:${local.ssh_public_key}"
-    startup-script = <<-EOF
-      #!/bin/bash
-      set -e
-      exec > /var/log/startup-script.log 2>&1
-
-      # ---- First Boot Check ----
-      INIT_FLAG="/var/lib/startup-complete"
-      if [ -f "$INIT_FLAG" ]; then
-        echo "Already initialized — starting services only"
-        systemctl start ueransim-gnb || true
-        systemctl start ueransim-ue || true
-        exit 0
-      fi
-
-      echo "=== Starting UERANSIM VM setup ==="
-
-      # ---- System Updates ----
-      apt-get update -y
-      apt-get install -y \
-        make \
-        gcc \
-        g++ \
-        libsctp-dev \
-        lksctp-tools \
-        iproute2 \
-        git \
-        curl \
-        wget \
-        wireguard \
-        wireguard-tools \
-        net-tools \
-        cmake
-
-      # ---- Load SCTP module (required for NGAP N2 interface) ----
-      modprobe sctp
-      echo "sctp" >> /etc/modules-load.d/sctp.conf
-
-      # ---- Build UERANSIM ----
-      git clone https://github.com/aligungr/UERANSIM /home/ubuntu/UERANSIM
-      cd /home/ubuntu/UERANSIM
-      make -j$(nproc)
-      chown -R ubuntu:ubuntu /home/ubuntu/UERANSIM
-
-      # ---- WireGuard Keys ----
-      mkdir -p /etc/wireguard
-      wg genkey | tee /etc/wireguard/private.key | wg pubkey > /etc/wireguard/public.key
-      chmod 600 /etc/wireguard/private.key
-      UERANSIM_PUBLIC_KEY=$(cat /etc/wireguard/public.key)
-      echo "ueransim WireGuard public key: $UERANSIM_PUBLIC_KEY" > /home/ubuntu/wireguard-keys.txt
-      chown ubuntu:ubuntu /home/ubuntu/wireguard-keys.txt
-
-      # ---- Systemd Service — gNB ----
-      cat > /etc/systemd/system/ueransim-gnb.service << 'SVCEOF'
-[Unit]
-Description=UERANSIM gNB — 5G Base Station Simulator
-After=network.target wg-quick@wg0.service
-Wants=network.target
-
-[Service]
-Type=simple
-User=ubuntu
-WorkingDirectory=/home/ubuntu/UERANSIM
-ExecStart=/home/ubuntu/UERANSIM/build/nr-gnb -c /home/ubuntu/UERANSIM/config/free5gc-gnb.yaml
-Restart=on-failure
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-SVCEOF
-
-      # ---- Systemd Service — UE ----
-      cat > /etc/systemd/system/ueransim-ue.service << 'SVCEOF'
-[Unit]
-Description=UERANSIM UE — User Equipment Simulator
-After=ueransim-gnb.service
-Wants=ueransim-gnb.service
-
-[Service]
-Type=simple
-User=ubuntu
-WorkingDirectory=/home/ubuntu/UERANSIM
-ExecStartPre=/bin/sleep 15
-ExecStart=/home/ubuntu/UERANSIM/build/nr-ue -c /home/ubuntu/UERANSIM/config/free5gc-ue.yaml
-Restart=on-failure
-RestartSec=15
-
-[Install]
-WantedBy=multi-user.target
-SVCEOF
-
-      systemctl daemon-reload
-      systemctl enable ueransim-gnb
-      systemctl enable ueransim-ue
-
-      echo "=== UERANSIM VM setup complete ===" | tee -a /home/ubuntu/ready.txt
-      chown ubuntu:ubuntu /home/ubuntu/ready.txt
-      touch "$INIT_FLAG"
-    EOF
+    ssh-keys       = "${var.ssh_user}:${local.ssh_public_key}"
+    startup-script = file("${path.module}/startup/startup-ueransim.sh")
+    enable-oslogin = "FALSE"
+    
   }
 
   labels = {
@@ -198,4 +107,5 @@ SVCEOF
   service_account {
     scopes = ["cloud-platform"]
   }
+  
 }

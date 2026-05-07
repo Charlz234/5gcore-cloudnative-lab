@@ -8,7 +8,7 @@ variable "gcp_project_id" {
 }
 
 variable "gcp_region" {
-  description = "GCP Region — one og the cheapest for t2d spot"
+  description = "GCP Region"
   type        = string
   default     = "us-south1"
 }
@@ -34,32 +34,31 @@ variable "ssh_public_key_path" {
 variable "core_machine_type" {
   description = "Machine type for 5G core VM"
   type        = string
-  default     = "t2d-standard-4"
+  default     = "t2d-standard-2"
 }
 
 variable "ueransim_machine_type" {
   description = "Machine type for UERANSIM VM"
   type        = string
-  default     = "t2d-standard-2"
+  default     = "t2d-standard-1"
 }
 
 variable "core_disk_size_gb" {
   description = "Boot disk size for 5G core VM in GB"
   type        = number
-  default     = 50
+  default     = 30
 }
 
 variable "ueransim_disk_size_gb" {
   description = "Boot disk size for UERANSIM VM in GB"
   type        = number
-  default     = 30
+  default     = 10
 }
 
 variable "ubuntu_image" {
   description = "Ubuntu 22.04 LTS image"
   type        = string
   default     = "ubuntu-os-cloud/ubuntu-2204-lts"
-
 }
 
 variable "core_5g_ip" {
@@ -75,70 +74,13 @@ variable "ueransim_ip" {
 }
 
 variable "core_startup_script" {
-  description = "Startup script for core-5g VM. Change in terraform.tfvars to switch weeks"
+  description = "Startup script for core-5g VM"
   type        = string
-  default     = "startup/startup-week1.sh"
-  
+  default     = "startup/startup-core.sh"
 }
 
-# ============================================
-# OCI Variables
-# ============================================
-
-variable "oci_tenancy_ocid" {
-  description = "OCI Tenancy OCID"
+variable "grafana_admin_password" {
+  description = "Grafana admin password — stored in terraform.tfvars only, never committed"
   type        = string
-}
-
-variable "oci_user_ocid" {
-  description = "OCI User OCID"
-  type        = string
-}
-
-variable "oci_fingerprint" {
-  description = "OCI API Key Fingerprint"
-  type        = string
-}
-
-variable "oci_private_key_path" {
-  description = "Path to OCI API private key"
-  type        = string
-  default     = "/.oci/oci_api_key.pem"
-}
-
-variable "oci_region" {
-  description = "OCI Region"
-  type        = string
-  default     = "us-ashburn-1"
-}
-
-variable "oci_compartment_ocid" {
-  description = "OCI Compartment OCID"
-  type        = string
-}
-
-variable "oci_ubuntu_image_ocid" {
-  description = "Ubuntu 22.04 image OCID for your OCI region"
-  type        = string
-}
-
-variable "oci_ssh_public_key" {
-  description = "SSH public key for OCI VM"
-  type        = string
-}
-
-variable "oci_availability_domain" {
-  description = "OCI Availability Domain for bastion VM — free tier only in AD-2 as at Feb 2026"
-  type        = string
-  default     = "DRxg:US-ASHBURN-AD-2"
-}
-
-# ============================================
-# WireGuard Variables
-# ============================================
-
-variable "wireguard_port" {
-  description = "WireGuard UDP listen port"
-  type        = number
-  default     = 51820
+  sensitive   = true
 }
