@@ -260,6 +260,13 @@ cloudflared tunnel create free5gc-lab
 cloudflared tunnel route dns <TUNNEL-ID> grafana.yourdomain.xyz
 cloudflared tunnel route dns <TUNNEL-ID> argocd.yourdomain.xyz
 
+
+# Get ClusterIPs:
+```bash
+kubectl get svc -n monitoring kube-prometheus-stack-grafana
+kubectl get svc -n argocd argocd-server
+
+
 # Write config
 sudo mkdir -p /etc/cloudflared /root/.cloudflared
 sudo cp ~/.cloudflared/<TUNNEL-ID>.json /root/.cloudflared/
@@ -278,12 +285,6 @@ EOF
 # Install and start service
 sudo cloudflared service install
 sudo systemctl enable --now cloudflared
-```
-
-Get ClusterIPs:
-```bash
-kubectl get svc -n monitoring kube-prometheus-stack-grafana
-kubectl get svc -n argocd argocd-server
 ```
 
 ---
