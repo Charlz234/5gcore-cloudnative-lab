@@ -330,6 +330,10 @@ K8s manifests, Helm chart, and monitoring configs live in the companion repo:
 
 ---
 
+## Troubleshooting
+If ArgoCD does not perform sync to make the cluster healthy, mostly upon VM preemption,
+kindly run ~/free5gc-k8s/restart-nfs.sh
+
 ## Cost
 
 | Scenario | Monthly Cost |
