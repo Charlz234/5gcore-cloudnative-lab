@@ -1,0 +1,90 @@
+<svg width="100%" viewBox="0 0 690 520" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>GCP Infrastructure Overview (N2/N3 Highlighted)</title>
+  <desc>Two GCP spot VMs connected over an internal VPC network. core-5g runs k3s and free5GC. ueransim runs gNB/UE. GitHub and Cloudflare blocks positioned for clarity. N2/N3 connection highlighted.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="rgb(24, 95, 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect x="30" y="30" width="620" height="460" rx="16" fill="none" stroke="rgba(31, 30, 29, 0.3)" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="50" y="52" fill="rgb(61, 61, 58)" font-family="sans-serif" font-size="12px">GCP VPC — us-south1-a</text>
+
+  <g>
+    <rect x="55" y="70" width="270" height="390" rx="12" fill="rgb(225, 245, 238)" stroke="rgb(15, 110, 86)" stroke-width="0.5"/>
+    <text x="190" y="100" text-anchor="middle" fill="rgb(8, 80, 65)" font-family="sans-serif" font-size="14px" font-weight="500">core-5g</text>
+    <text x="190" y="118" text-anchor="middle" fill="rgb(15, 110, 86)" font-family="sans-serif" font-size="12px">t2d-standard-2 spot · 10.0.2.3</text>
+  </g>
+
+  <g>
+    <rect x="75" y="132" width="230" height="150" rx="8" fill="rgb(230, 241, 251)" stroke="rgb(24, 95, 165)" stroke-width="0.5"/>
+    <text x="190" y="156" text-anchor="middle" fill="rgb(12, 68, 124)" font-family="sans-serif" font-size="14px" font-weight="500">k3s cluster</text>
+    <text x="190" y="174" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">Cilium v1.19.1 · Multus-primary</text>
+    <text x="190" y="196" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">free5GC v4.2 — 12 NFs</text>
+    <text x="190" y="214" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">gtp5g v0.9.14 kernel module</text>
+    <text x="190" y="232" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">ArgoCD v3.3.7</text>
+    <text x="190" y="250" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">kube-prometheus-stack</text>
+    <text x="190" y="268" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">gtp5g exporter</text>
+  </g>
+
+  <g>
+    <rect x="75" y="298" width="230" height="56" rx="8" fill="rgb(250, 238, 218)" stroke="rgb(133, 79, 11)" stroke-width="0.5"/>
+    <text x="190" y="322" text-anchor="middle" fill="rgb(99, 56, 6)" font-family="sans-serif" font-size="14px" font-weight="500">cloudflared</text>
+    <text x="190" y="340" text-anchor="middle" fill="rgb(133, 79, 11)" font-family="sans-serif" font-size="12px">systemd · tunnel free5gc-lab</text>
+  </g>
+
+  <g>
+    <rect x="75" y="370" width="230" height="72" rx="8" fill="rgb(241, 239, 232)" stroke="rgb(95, 94, 90)" stroke-width="0.5"/>
+    <text x="190" y="394" text-anchor="middle" fill="rgb(95, 94, 90)" font-family="sans-serif" font-size="12px">grafana.niv-dev.xyz</text>
+    <text x="190" y="412" text-anchor="middle" fill="rgb(95, 94, 90)" font-family="sans-serif" font-size="12px">argocd.niv-dev.xyz</text>
+    <text x="190" y="430" text-anchor="middle" fill="rgb(95, 94, 90)" font-family="sans-serif" font-size="12px"></text>
+  </g>
+
+  <g>
+    <rect x="360" y="70" width="260" height="200" rx="12" fill="rgb(238, 237, 254)" stroke="rgb(83, 74, 183)" stroke-width="0.5"/>
+    <text x="490" y="100" text-anchor="middle" fill="rgb(60, 52, 137)" font-family="sans-serif" font-size="14px" font-weight="500">ueransim</text>
+    <text x="490" y="118" text-anchor="middle" fill="rgb(83, 74, 183)" font-family="sans-serif" font-size="12px">t2d-standard-1 spot · 10.0.2.2</text>
+  </g>
+
+  <g>
+    <rect x="378" y="132" width="224" height="60" rx="8" fill="rgb(230, 241, 251)" stroke="rgb(24, 95, 165)" stroke-width="0.5"/>
+    <text x="490" y="158" text-anchor="middle" fill="rgb(12, 68, 124)" font-family="sans-serif" font-size="14px" font-weight="500">UERANSIM gNB</text>
+    <text x="490" y="176" text-anchor="middle" fill="rgb(24, 95, 165)" font-family="sans-serif" font-size="12px">N2 SCTP · N3 GTP-U</text>
+  </g>
+
+  <g>
+    <rect x="378" y="206" width="224" height="44" rx="8" fill="rgb(250, 236, 231)" stroke="rgb(153, 60, 29)" stroke-width="0.5"/>
+    <text x="490" y="224" text-anchor="middle" fill="rgb(113, 43, 19)" font-family="sans-serif" font-size="14px" font-weight="500">nr-ue processes</text>
+    <text x="490" y="242" text-anchor="middle" fill="rgb(153, 60, 29)" font-family="sans-serif" font-size="12px">uesimtun0–3 · 10.60.0.x/24</text>
+  </g>
+
+  <g>
+    <rect x="380" y="280" width="115" height="56" rx="8" fill="rgb(241, 239, 232)" stroke="rgb(95, 94, 90)" stroke-width="0.5"/>
+    <text x="437.5" y="304" text-anchor="middle" fill="rgb(68, 68, 65)" font-family="sans-serif" font-size="14px" font-weight="500">GitHub</text>
+    <text x="437.5" y="322" text-anchor="middle" fill="rgb(95, 94, 90)" font-family="sans-serif" font-size="12px">GHCR images</text>
+  </g>
+
+  <g>
+    <rect x="505" y="380" width="115" height="56" rx="8" fill="rgb(241, 239, 232)" stroke="rgb(95, 94, 90)" stroke-width="0.5"/>
+    <text x="563" y="404" text-anchor="middle" fill="rgb(68, 68, 65)" font-family="sans-serif" font-size="14px" font-weight="500">Cloudflare</text>
+    <text x="563" y="422" text-anchor="middle" fill="rgb(95, 94, 90)" font-family="sans-serif" font-size="12px">DNS + Access</text>
+  </g>
+
+  <text x="490" y="455" text-anchor="middle" fill="rgb(61, 61, 58)" font-family="sans-serif" font-size="12px">GCP internal VPC</text>
+  <text x="490" y="473" text-anchor="middle" fill="rgb(61, 61, 58)" font-family="sans-serif" font-size="12px">10.0.2.0/24</text>
+
+  <line x1="325" y1="200" x2="360" y2="175" stroke="rgb(24, 95, 165)" stroke-width="2.5" marker-end="url(#arrow-blue)" marker-start="url(#arrow-blue)"/>
+  <rect x="322" y="172" width="40" height="18" rx="4" fill="white" fill-opacity="0.8"/>
+  <text x="342" y="186" text-anchor="middle" fill="rgb(12, 68, 124)" font-family="sans-serif" font-size="12px" font-weight="bold">N2/N3</text>
+
+  <line x1="305" y1="232" x2="380" y2="280" stroke="rgb(115, 114, 108)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <line x1="305" y1="335" x2="505" y2="408" stroke="rgb(115, 114, 108)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <line x1="602" y1="228" x2="640" y2="228" stroke="rgb(115, 114, 108)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="644" y="232" fill="rgb(61, 61, 58)" font-family="sans-serif" font-size="12px">8.8.8.8</text>
+
+</svg>
