@@ -353,22 +353,27 @@ cat >> /home/ubuntu/ready.txt << 'READYEOF'
 === Manual Steps Required After First Boot ===
 
 1. Access Grafana locally:
+   #On core-5g VM:
    kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
    # From local machine:
    gcloud compute ssh core-5g --zone=us-south1-a --tunnel-through-iap -- -L 3000:localhost:3000
    # Open: http://localhost:3000
 
 2. Access ArgoCD locally:
+   #On core-5g VM:
    kubectl port-forward -n argocd svc/argocd-server 8080:80
    # From local machine:
    gcloud compute ssh core-5g --zone=us-south1-a --tunnel-through-iap -- -L 8080:localhost:8080
+
+   #In another VM terminal, get the password. Username is admin
+   kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d
    # Open: http://localhost:8080
 
 3. Verify ArgoCD synced Free5GC:
    kubectl get pods -n free5gc
 
-4. Provision subscriber via WebUI:
-   # On VM:
+4. Provision subscriber(s) via WebUI:
+   #On core-5g VM::
    kubectl port-forward -n free5gc svc/webui 5000:5000
    # From local machine (separate terminal):
    gcloud compute ssh core-5g --zone=us-south1-a --tunnel-through-iap -- -L 5000:localhost:5000
